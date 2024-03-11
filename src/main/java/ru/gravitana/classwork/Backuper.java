@@ -36,20 +36,21 @@ public class Backuper {
 
     static void backupFile(File target, File backup) throws IOException {
 
-        if (backup.mkdir()) {
+        if (target.isDirectory() && backup.mkdirs()) {
             return;
         }
 
-        System.out.println(target.getPath() + " => " + backup.getPath());
-
-//        try(FileOutputStream fileOutputStream = new FileOutputStream(fileOut)){
-//            int c;
-//            try (FileInputStream fileInputStream = new FileInputStream(fileIn)){
-//                while ((c = fileInputStream.read()) != -1){
-//                    fileOutputStream.write(c);
-//                }
-//            }
-//        }
+        if (target.isFile()) {
+            try(FileOutputStream fileOutputStream = new FileOutputStream(backup)){
+                int c;
+                try (FileInputStream fileInputStream = new FileInputStream(target)){
+                    while ((c = fileInputStream.read()) != -1){
+                        fileOutputStream.write(c);
+                    }
+                }
+            }
+        }
+//        System.out.println(target.getPath() + " => " + backup.getPath());
     }
 
 }
